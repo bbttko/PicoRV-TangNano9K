@@ -1,0 +1,65 @@
+//Part Number: GW1NR-LV9QN88PC6/I5
+
+
+//----------- clock ----------------
+IO_LOC "clock27M" 52;
+IO_PORT "clock27M" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+
+//----------- uart ----------------
+IO_LOC "LEDS[6]" 16;
+IO_PORT "LEDS[6]" PULL_MODE=UP DRIVE=8;
+IO_LOC "LEDS[5]" 15;
+IO_PORT "LEDS[5]" PULL_MODE=UP DRIVE=8;
+IO_LOC "LEDS[4]" 14;
+IO_PORT "LEDS[4]" PULL_MODE=UP DRIVE=8;
+IO_LOC "LEDS[3]" 13;
+IO_PORT "LEDS[3]" PULL_MODE=UP DRIVE=8;
+IO_LOC "LEDS[2]" 11;
+IO_PORT "LEDS[2]" PULL_MODE=UP DRIVE=8;
+IO_LOC "LEDS[1]" 10;
+IO_PORT "LEDS[1]" PULL_MODE=UP DRIVE=8;
+
+//----------- button (following board markings) ----------------
+IO_LOC "S1" 4;
+IO_PORT "S1" PULL_MODE=UP;
+IO_LOC "S2" 3;
+IO_PORT "S2" PULL_MODE=UP;
+
+//----------- spi flash ----------------
+//IO_LOC "SPIFLASH_CLK" 59;
+//IO_LOC "SPIFLASH_CSN" 60;
+//IO_LOC "SPIFLASH_MOSI" 61;
+//IO_LOC "SPIFLASH_MISO" 62;
+
+
+//----------- tf card ----------------
+//IO_LOC "TF_SCLK" 36;
+//IO_LOC "TF_MOSI" 37;
+//IO_LOC "TF_CS" 38;
+//IO_LOC "TF_MISO" 39;
+
+//IO_PORT "TF_SCLK" PULL_MODE=UP DRIVE=8;
+//IO_PORT "TF_MOSI" PULL_MODE=UP DRIVE=8;
+//IO_PORT "TF_CS" PULL_MODE=UP DRIVE=8;
+//IO_PORT "TF_MISO" PULL_MODE=UP;
+
+//----------- uart ----------------
+IO_LOC "TXD" 17;
+IO_PORT "TXD" IO_TYPE=LVCMOS18 PULL_MODE=UP DRIVE=8;
+IO_LOC "RXD" 18;
+IO_PORT "RXD" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+
+//----------- spi lcd ----------------
+// https://www.globalsources.com/TFT-LCD/smart-watch-1191632671p.htm
+//IO_LOC "SPILCD_RSTN" 47;    // connected to reset pin.  0 = reset, 1 = normal
+//IO_LOC "SPILCD_DC" 49;      // RS = data(1)/command(0) pin (renamed from SPILCD_RS)
+//IO_LOC "SPILCD_MOSI" 77;    // spi data
+//IO_LOC "SPILCD_SCLK" 76;    // spi clock
+//IO_LOC "SPILCD_CS" 48;      // active low, 0 = enable, 1= disable
+
+//    
+//IO_PORT "SPILCD_RSTN" PULL_MODE=UP DRIVE=8;
+//IO_PORT "SPILCD_DC" PULL_MODE=UP DRIVE=8;
+//IO_PORT "SPILCD_MOSI" PULL_MODE=UP DRIVE=8;
+//IO_PORT "SPILCD_SCLK" PULL_MODE=UP DRIVE=8;
+//IO_PORT "SPILCD_CS" PULL_MODE=UP DRIVE=8;
