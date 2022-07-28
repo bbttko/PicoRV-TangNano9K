@@ -1,7 +1,7 @@
 /*
  *  PicoSoC - A simple example SoC using PicoRV32
  *
- *  Copyright (C) 2017  Clifford Wolf <clifford@clifford.at>
+ *  Copyright (C) 2017  Claire Xenia Wolf <claire@yosyshq.com>
  *
  *  Permission to use, copy, modify, and/or distribute this software for any
  *  purpose with or without fee is hereby granted, provided that the above
@@ -17,7 +17,7 @@
  *
  */
 
-module simpleuart (
+module simpleuart #(parameter integer DEFAULT_DIV = 1) (
 	input clk,
 	input resetn,
 
@@ -41,6 +41,7 @@ module simpleuart (
 	reg [7:0] recv_pattern;
 	reg [7:0] recv_buf_data;
 	reg recv_buf_valid;
+
 	reg [9:0] send_pattern;
 	reg [3:0] send_bitcnt;
 	reg [31:0] send_divcnt;
@@ -49,11 +50,11 @@ module simpleuart (
 	assign reg_div_do = cfg_divider;
 
 	assign reg_dat_wait = reg_dat_we && (send_bitcnt || send_dummy);
-	assign reg_dat_do = recv_buf_valid ? {24'b0, recv_buf_data} : ~0;
+	assign reg_dat_do = recv_buf_valid ? recv_buf_data : ~0;
 
 	always @(posedge clk) begin
 		if (!resetn) begin
-			cfg_divider <= 433;
+			cfg_divider <= DEFAULT_DIV;
 		end else begin
 			if (reg_div_we[0]) cfg_divider[ 7: 0] <= reg_div_di[ 7: 0];
 			if (reg_div_we[1]) cfg_divider[15: 8] <= reg_div_di[15: 8];
@@ -73,35 +74,33 @@ module simpleuart (
 			recv_divcnt <= recv_divcnt + 1;
 			if (reg_dat_re)
 				recv_buf_valid <= 0;
-			if (!recv_buf_valid) begin
-				case (recv_state)
-					0: begin
-						if (!ser_rx)
-							recv_state <= 1;
+			case (recv_state)
+				0: begin
+					if (!ser_rx)
+						recv_state <= 1;
+					recv_divcnt <= 0;
+				end
+				1: begin
+					if (2*recv_divcnt > cfg_divider) begin
+						recv_state <= 2;
 						recv_divcnt <= 0;
 					end
-					1: begin
-						if (2*recv_divcnt > cfg_divider) begin
-							recv_state <= 2;			//state为2,则往后进入default进行接收，持续8个周期
-							recv_divcnt <= 0;
-						end
+				end
+				10: begin
+					if (recv_divcnt > cfg_divider) begin
+						recv_buf_data <= recv_pattern;
+						recv_buf_valid <= 1;
+						recv_state <= 0;
 					end
-					10: begin							//10是10进制
-						if (recv_divcnt > cfg_divider) begin
-							recv_buf_data <= recv_pattern;
-							recv_buf_valid <= 1;
-							recv_state <= 0;
-						end
+				end
+				default: begin
+					if (recv_divcnt > cfg_divider) begin
+						recv_pattern <= {ser_rx, recv_pattern[7:1]};
+						recv_state <= recv_state + 1;
+						recv_divcnt <= 0;
 					end
-					default: begin
-						if (recv_divcnt > cfg_divider) begin
-							recv_pattern <= {ser_rx, recv_pattern[7:1]};
-							recv_state <= recv_state + 4'b0001;
-							recv_divcnt <= 0;
-						end
-					end
-				endcase
-			end
+				end
+			endcase
 		end
 	end
 
@@ -109,7 +108,7 @@ module simpleuart (
 
 	always @(posedge clk) begin
 		if (reg_div_we)
-			send_dummy <= 1;				//dummy表示写divisor或者reset的情况
+			send_dummy <= 1;
 		send_divcnt <= send_divcnt + 1;
 		if (!resetn) begin
 			send_pattern <= ~0;
@@ -124,13 +123,13 @@ module simpleuart (
 				send_dummy <= 0;
 			end else
 			if (reg_dat_we && !send_bitcnt) begin
-				send_pattern <= {1'b1, reg_dat_di[7:0], 1'b0};			//MSB ~ LSB 分别为终止，数据，起始位
+				send_pattern <= {1'b1, reg_dat_di[7:0], 1'b0};
 				send_bitcnt <= 10;
 				send_divcnt <= 0;
 			end else
 			if (send_divcnt > cfg_divider && send_bitcnt) begin
 				send_pattern <= {1'b1, send_pattern[9:1]};
-				send_bitcnt <= send_bitcnt - 4'b0001;
+				send_bitcnt <= send_bitcnt - 1;
 				send_divcnt <= 0;
 			end
 		end

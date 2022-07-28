@@ -33,7 +33,7 @@ module top (
 	localparam IRQ_ADDR		=	32'h0000_0008;		// irq table.. in start.s
 	localparam STACK_ADDR	=	RAM_ADDR_END + 1;
 
-	
+	localparam SYSTEM_CLOCK =   50_000_000;
 	// ========================= PLL =========================
 	wire clock_main /* synthesis syn_keep = 1 */;
 	wire locked     /* synthesis syn_keep = 1 */;
@@ -46,6 +46,7 @@ module top (
         .clkin  (clock27M)      //input clkin
     );
 
+    // some reset delay
     delay #( .ctr_width (4) ) pll_delay (       // 320 - 650 ns delay between rst_i and rst_o
         .clk_i  (clock_main),
         .rst_i  (lock_pre),
@@ -55,11 +56,11 @@ module top (
 
 	// ========================= Button IRQ [20] =========================
 	wire dS2;
-	always @(posedge clock_main) begin
+	always @(posedge clock_main)
 		irq[20] <= ~dS2;
-	end
+
 	dBounce #(
-        .CLOCK      (50_000_000),
+        .CLOCK      (SYSTEM_CLOCK),
         .WINDOWSIZE (10_000_000)
     ) db (
         .resetn     (locked),

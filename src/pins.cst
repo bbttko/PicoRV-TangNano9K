@@ -50,14 +50,13 @@ IO_LOC "RXD" 18;
 IO_PORT "RXD" IO_TYPE=LVCMOS33 PULL_MODE=UP;
 
 //----------- spi lcd ----------------
-// https://www.globalsources.com/TFT-LCD/smart-watch-1191632671p.htm
+// keyword "pin definition" -> https://www.globalsources.com/TFT-LCD/smart-watch-1191632671p.htm
 //IO_LOC "SPILCD_RSTN" 47;    // connected to reset pin.  0 = reset, 1 = normal
 //IO_LOC "SPILCD_DC" 49;      // RS = data(1)/command(0) pin (renamed from SPILCD_RS)
 //IO_LOC "SPILCD_MOSI" 77;    // spi data
 //IO_LOC "SPILCD_SCLK" 76;    // spi clock
 //IO_LOC "SPILCD_CS" 48;      // active low, 0 = enable, 1= disable
 
-//    
 //IO_PORT "SPILCD_RSTN" PULL_MODE=UP DRIVE=8;
 //IO_PORT "SPILCD_DC" PULL_MODE=UP DRIVE=8;
 //IO_PORT "SPILCD_MOSI" PULL_MODE=UP DRIVE=8;
