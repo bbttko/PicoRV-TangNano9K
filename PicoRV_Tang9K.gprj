@@ -8,7 +8,7 @@
         <File path="src/btRAM.v" type="file.verilog" enable="1"/>
         <File path="src/dBounce.v" type="file.verilog" enable="1"/>
         <File path="src/delay.v" type="file.verilog" enable="1"/>
-        <File path="src/gowin_prom/gowin_prom.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_prom/gowin_prom.v" type="file.verilog" enable="0"/>
         <File path="src/gowin_rpll/gowin_rpll.v" type="file.verilog" enable="1"/>
         <File path="src/picorv32-master/picorv32.v" type="file.verilog" enable="1"/>
         <File path="src/picorv32.v" type="file.verilog" enable="0"/>

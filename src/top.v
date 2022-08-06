@@ -70,8 +70,6 @@ module top (
 	);
 
 
-
-
 	// ========================= CPU =========================
 	wire mem_valid;
 	wire mem_ready /* synthesis syn_keep = 1 */;
