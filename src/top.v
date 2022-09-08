@@ -1,5 +1,6 @@
 // picorv on Tang 9K
 //
+// 08-Sep-22 btko   replace ip core generated file with mypll.v
 // 26-Jul-22 btko   Clean up for use as reference
 //
 `default_nettype none
@@ -39,7 +40,7 @@ module top (
 	wire locked     /* synthesis syn_keep = 1 */;
     wire lock_pre   /* synthesis syn_keep = 1 */;
 
-    Gowin_rPLL pll (
+    mypll pll (
         .clkout (clock_main),   //output clkout
         .lock   (lock_pre),     //output lock
         .reset  (~S1),          //input reset
